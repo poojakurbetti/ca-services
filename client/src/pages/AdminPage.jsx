@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import axiosInstance from "../api/axiosInstance"; // use token automatically
+import axiosInstance from "../api/axiosInstance"; // token included automatically
 import {
   Button,
   TextField,
@@ -18,13 +18,12 @@ function AdminPage() {
   const [services, setServices] = useState([]);
   const [open, setOpen] = useState(false);
   const [editing, setEditing] = useState(null);
-  const [form, setForm] = useState({ name: "", description: "" });
+  const [form, setForm] = useState({ name: "", description: "", price: "" });
 
   useEffect(() => {
-    // Redirect to login if no token
     const token = localStorage.getItem("adminToken");
     if (!token) {
-      window.location.href = "/login"; // or your login page
+      window.location.href = "/login";
     } else {
       fetchServices();
     }
@@ -36,16 +35,21 @@ function AdminPage() {
       setServices(res.data);
     } catch (err) {
       console.error(err);
+      alert(err.response?.data?.error || "Failed to fetch services");
     }
   };
 
   const handleOpen = (service = null) => {
     if (service) {
       setEditing(service);
-      setForm({ name: service.name, description: service.description });
+      setForm({
+        name: service.name,
+        description: service.description,
+        price: service.price || "",
+      });
     } else {
       setEditing(null);
-      setForm({ name: "", description: "" });
+      setForm({ name: "", description: "", price: "" });
     }
     setOpen(true);
   };
@@ -53,7 +57,7 @@ function AdminPage() {
   const handleClose = () => {
     setOpen(false);
     setEditing(null);
-    setForm({ name: "", description: "" });
+    setForm({ name: "", description: "", price: "" });
   };
 
   const handleChange = (e) => {
@@ -61,25 +65,34 @@ function AdminPage() {
   };
 
   const handleSave = async () => {
+    if (!form.name.trim() || !form.description.trim() || form.price === "") {
+      alert("Please enter name, description, and price");
+      return;
+    }
+
     try {
+      const payload = { ...form, price: Number(form.price) };
       if (editing) {
-        await axiosInstance.put(`/services/${editing._id}`, form);
+        await axiosInstance.put(`/services/${editing._id}`, payload);
       } else {
-        await axiosInstance.post("/services", form);
+        await axiosInstance.post("/services", payload);
       }
       fetchServices();
       handleClose();
     } catch (err) {
       console.error(err);
+      alert(err.response?.data?.error || "Something went wrong while saving service");
     }
   };
 
   const handleDelete = async (id) => {
+    if (!window.confirm("Are you sure you want to delete this service?")) return;
     try {
       await axiosInstance.delete(`/services/${id}`);
       fetchServices();
     } catch (err) {
       console.error(err);
+      alert(err.response?.data?.error || "Something went wrong while deleting service");
     }
   };
 
@@ -99,6 +112,7 @@ function AdminPage() {
               <CardContent>
                 <Typography variant="h6">{service.name}</Typography>
                 <Typography variant="body2">{service.description}</Typography>
+                <Typography variant="subtitle2">Price: ₹{service.price}</Typography>
               </CardContent>
               <CardActions>
                 <Button onClick={() => handleOpen(service)}>Edit</Button>
@@ -130,6 +144,18 @@ function AdminPage() {
             label="Description"
             name="description"
             value={form.description}
+            onChange={handleChange}
+            multiline
+            rows={3}
+            required
+          />
+          <TextField
+            fullWidth
+            margin="normal"
+            label="Price"
+            name="price"
+            type="number"
+            value={form.price}
             onChange={handleChange}
             required
           />

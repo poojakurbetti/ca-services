@@ -2,11 +2,15 @@ import React, { useState, useEffect } from "react";
 import { TextField, Button, Box } from "@mui/material";
 
 function ServiceForm({ service, onSave, onCancel }) {
-  const [form, setForm] = useState({ name: "", description: "" });
+  const [form, setForm] = useState({ name: "", description: "", price: "" });
 
   useEffect(() => {
     if (service) {
-      setForm(service);
+      setForm({
+        name: service.name || "",
+        description: service.description || "",
+        price: service.price || "",
+      });
     }
   }, [service]);
 
@@ -16,7 +20,14 @@ function ServiceForm({ service, onSave, onCancel }) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    onSave(form);
+
+    // Minimal validation
+    if (!form.name.trim() || !form.description.trim() || form.price === "") {
+      alert("Please enter name, description, and price");
+      return;
+    }
+
+    onSave({ ...form, price: Number(form.price) }); // ensure price is a number
   };
 
   return (
@@ -39,6 +50,16 @@ function ServiceForm({ service, onSave, onCancel }) {
         onChange={handleChange}
         multiline
         rows={3}
+        required
+      />
+      <TextField
+        fullWidth
+        margin="normal"
+        label="Price"
+        name="price"
+        type="number"
+        value={form.price}
+        onChange={handleChange}
         required
       />
       <Box sx={{ mt: 2, display: "flex", gap: 2 }}>
