@@ -2,7 +2,7 @@ import axios from "axios";
 
 // Create an axios instance
 const axiosInstance = axios.create({
-  baseURL: process.env.REACT_APP_API_URL,
+  baseURL: import.meta.env.VITE_API_URL, // ✅ Use import.meta.env
 });
 
 // Add interceptor for Authorization
