@@ -3,8 +3,8 @@ import axios from "axios";
 
 function CustomerPage() {
   const [services, setServices] = useState([]);
-  const [enquiry, setEnquiry] = useState({}); // per-service enquiry
-  const [messages, setMessages] = useState({}); // per-service messages
+  const [enquiry, setEnquiry] = useState({});
+  const [messages, setMessages] = useState({});
 
   useEffect(() => {
     fetchServices();
@@ -12,7 +12,7 @@ function CustomerPage() {
 
   const fetchServices = async () => {
     try {
-      const res = await axios.get(import.meta.env.VITE_API_URL+"/services");
+      const res = await axios.get(import.meta.env.VITE_API_URL + "/services");
       const formattedServices = res.data.map((service) => ({
         ...service,
         price: service.price ? `₹${service.price}` : "Price not available",
@@ -44,7 +44,7 @@ function CustomerPage() {
     }
 
     try {
-      await axios.post(import.meta.env.VITE_API_URL+"/services/enquire", {
+      await axios.post(import.meta.env.VITE_API_URL + "/services/enquire", {
         serviceName,
         email,
         phone,
@@ -55,7 +55,6 @@ function CustomerPage() {
         [serviceId]: `✅ Enquiry sent successfully for ${serviceName}`,
       });
 
-      // Clear only this service's inputs
       setEnquiry({ ...enquiry, [serviceId]: { email: "", phone: "" } });
     } catch (err) {
       console.error(err);
@@ -68,48 +67,75 @@ function CustomerPage() {
 
   return (
     <div style={{ padding: 20 }}>
-      <h2>Our Services</h2>
-      {services.map((service) => (
-        <div
-          key={service._id}
-          style={{
-            border: "1px solid #ccc",
-            padding: 15,
-            margin: 10,
-            borderRadius: 5,
-            boxShadow: "0 2px 5px rgba(0,0,0,0.1)",
-          }}
-        >
-          <h4>{service.name}</h4>
-          <p>{service.description}</p>
-          <p style={{ fontWeight: "bold" }}>Price: {service.price}</p>
+      {/* Header with firm name and tagline */}
+      <div style={{ textAlign: "center", marginBottom: 30 }}>
+        <h1 style={{ color: "#007bff", marginBottom: 10 }}>
+          Animesh Kurbetti & Associates
+        </h1>
+        <p style={{ color: "#555", fontSize: 16 }}>
+          Precision in Accounting, Excellence in Advisory.
+        </p>
+      </div>
 
-          <div style={{ marginTop: 10 }}>
-            <input
-              type="email"
-              placeholder="Your Email"
-              value={enquiry[service._id]?.email || ""}
-              onChange={(e) => handleChange(service._id, "email", e.target.value)}
-              style={{ marginRight: 5, padding: 5 }}
-            />
-            <input
-              type="text"
-              placeholder="Phone Number"
-              value={enquiry[service._id]?.phone || ""}
-              onChange={(e) => handleChange(service._id, "phone", e.target.value)}
-              style={{ marginRight: 5, padding: 5 }}
-            />
-            <button onClick={() => handleEnquire(service._id, service.name)}>
-              Enquire Service
-            </button>
+      {/* Services */}
+      <div
+        style={{
+          display: "grid",
+          gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))",
+          gap: 20,
+        }}
+      >
+        {services.map((service) => (
+          <div
+            key={service._id}
+            style={{
+              border: "1px solid #ccc",
+              padding: 20,
+              borderRadius: 8,
+              boxShadow: "0 2px 8px rgba(0,0,0,0.1)",
+            }}
+          >
+            <h3 style={{ marginBottom: 10, color: "#007bff" }}>{service.name}</h3>
+            <p style={{ fontSize: 14, color: "#555" }}>{service.description}</p>
+            <span
+              style={{
+                display: "inline-block",
+                marginTop: 10,
+                padding: "4px 10px",
+                backgroundColor: "#f0f0f0",
+                borderRadius: 4,
+                fontWeight: "bold",
+              }}
+            >
+              {service.price}
+            </span>
+
+            <div style={{ marginTop: 15 }}>
+              <input
+                type="email"
+                placeholder="Your Email"
+                value={enquiry[service._id]?.email || ""}
+                onChange={(e) => handleChange(service._id, "email", e.target.value)}
+                style={{ marginRight: 5, padding: 6, width: "45%" }}
+              />
+              <input
+                type="text"
+                placeholder="Phone Number"
+                value={enquiry[service._id]?.phone || ""}
+                onChange={(e) => handleChange(service._id, "phone", e.target.value)}
+                style={{ marginRight: 5, padding: 6, width: "45%" }}
+              />
+              <button onClick={() => handleEnquire(service._id, service.name)} style={{ marginTop: 10, width: "100%", padding: 8 }}>
+                Enquire Service
+              </button>
+            </div>
+
+            {messages[service._id] && (
+              <p style={{ marginTop: 10, fontSize: 14 }}>{messages[service._id]}</p>
+            )}
           </div>
-
-          {/* Success/Error message for this service */}
-          {messages[service._id] && (
-            <p style={{ marginTop: 10 }}>{messages[service._id]}</p>
-          )}
-        </div>
-      ))}
+        ))}
+      </div>
     </div>
   );
 }
