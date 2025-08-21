@@ -70,8 +70,11 @@ function CustomerPage() {
       {/* Header with firm name and tagline */}
       <div style={{ textAlign: "center", marginBottom: 30 }}>
         <h1 style={{ color: "#007bff", marginBottom: 10 }}>
-          Animesh Kurbetti & Associates
+          FinSolve 
         </h1>
+        <p style={{ color: "#555", fontSize: 16 }}>
+          One-stop solution for everything finance.
+        </p>
         <p style={{ color: "#555", fontSize: 16 }}>
           Precision in Accounting, Excellence in Advisory.
         </p>
