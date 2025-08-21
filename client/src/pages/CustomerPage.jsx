@@ -67,16 +67,27 @@ function CustomerPage() {
 
   return (
     <div style={{ padding: 20 }}>
-      {/* Header with firm name and tagline */}
+      {/* Header with firm name, tagline, and external link */}
       <div style={{ textAlign: "center", marginBottom: 30 }}>
         <h1 style={{ color: "#007bff", marginBottom: 10 }}>
-          FinSolve 
+          FinSolve
         </h1>
         <p style={{ color: "#555", fontSize: 16 }}>
           One-stop solution for everything finance.
         </p>
         <p style={{ color: "#555", fontSize: 16 }}>
           Precision in Accounting, Excellence in Advisory.
+        </p>
+        <p style={{ marginTop: 10, fontSize: 14 }}>
+          Visit our official website:{" "}
+          <a
+            href="https://animeshkurbetti.wixsite.com/animesh-kurbetti/"
+            target="_blank"
+            rel="noopener noreferrer"
+            style={{ textDecoration: "underline", color: "#007bff" }}
+          >
+            animeshkurbetti.wixsite.com
+          </a>
         </p>
       </div>
 
@@ -119,16 +130,19 @@ function CustomerPage() {
                 placeholder="Your Email"
                 value={enquiry[service._id]?.email || ""}
                 onChange={(e) => handleChange(service._id, "email", e.target.value)}
-                style={{ marginRight: 5, padding: 6, width: "45%" }}
+                style={{ marginRight: 10, padding: 6, width: "45%" }} // increased spacing
               />
               <input
                 type="text"
                 placeholder="Phone Number"
                 value={enquiry[service._id]?.phone || ""}
                 onChange={(e) => handleChange(service._id, "phone", e.target.value)}
-                style={{ marginRight: 5, padding: 6, width: "45%" }}
+                style={{ padding: 6, width: "45%" }}
               />
-              <button onClick={() => handleEnquire(service._id, service.name)} style={{ marginTop: 10, width: "100%", padding: 8 }}>
+              <button
+                onClick={() => handleEnquire(service._id, service.name)}
+                style={{ marginTop: 10, width: "100%", padding: 8 }}
+              >
                 Enquire Service
               </button>
             </div>
