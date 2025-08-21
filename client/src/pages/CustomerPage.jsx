@@ -129,14 +129,16 @@ function CustomerPage() {
               {service.price}
             </span>
 
-            <div style={{ marginTop: 18, display: "flex", gap: 10 }}>
+            {/* Inputs */}
+            <div style={{ marginTop: 18, display: "flex", gap: 10, flexWrap: "wrap" }}>
               <input
                 type="email"
                 placeholder="Your Email"
                 value={enquiry[service._id]?.email || ""}
                 onChange={(e) => handleChange(service._id, "email", e.target.value)}
                 style={{
-                  flex: 1,
+                  flex: "1 1 45%",
+                  minWidth: 120,
                   padding: 8,
                   borderRadius: 8,
                   border: "1px solid #c4c9ce",
@@ -149,7 +151,8 @@ function CustomerPage() {
                 value={enquiry[service._id]?.phone || ""}
                 onChange={(e) => handleChange(service._id, "phone", e.target.value)}
                 style={{
-                  flex: 1,
+                  flex: "1 1 45%",
+                  minWidth: 120,
                   padding: 8,
                   borderRadius: 8,
                   border: "1px solid #c4c9ce",
@@ -157,6 +160,7 @@ function CustomerPage() {
                 }}
               />
             </div>
+
             <button
               onClick={() => handleEnquire(service._id, service.name)}
               style={{
