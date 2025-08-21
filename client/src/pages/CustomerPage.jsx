@@ -12,7 +12,7 @@ function CustomerPage() {
 
   const fetchServices = async () => {
     try {
-      const res = await axios.get("http://localhost:7001/api/services");
+      const res = await axios.get(process.env.REACT_APP_API_URL+"/services");
       const formattedServices = res.data.map((service) => ({
         ...service,
         price: service.price ? `₹${service.price}` : "Price not available",
@@ -44,7 +44,7 @@ function CustomerPage() {
     }
 
     try {
-      await axios.post("http://localhost:7001/api/services/enquire", {
+      await axios.post(process.env.REACT_APP_API_URL+"/services/enquire", {
         serviceName,
         email,
         phone,
