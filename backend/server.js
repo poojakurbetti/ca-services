@@ -16,12 +16,15 @@ app.use(express.json());
 app.use("/api/services", serviceRoutes); // customer + admin
 app.use("/api/auth", authRoutes);        // admin login
 
+// Check env
+if (!process.env.MONGO_URI) {
+  console.error("❌ MONGO_URI is not defined in environment variables");
+  process.exit(1);
+}
+
 // MongoDB connection
 mongoose
-  .connect(process.env.MONGO_URI, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  })
+  .connect(process.env.MONGO_URI)
   .then(() => console.log("✅ MongoDB connected"))
   .catch((err) => {
     console.error("❌ MongoDB connection failed:", err.message);
