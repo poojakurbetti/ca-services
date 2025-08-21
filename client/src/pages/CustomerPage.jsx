@@ -66,25 +66,25 @@ function CustomerPage() {
   };
 
   return (
-    <div style={{ padding: 20 }}>
-      {/* Header with firm name, tagline, and external link */}
-      <div style={{ textAlign: "center", marginBottom: 30 }}>
-        <h1 style={{ color: "#007bff", marginBottom: 10 }}>
+    <div style={{ padding: 20, fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif", backgroundColor: "#f7f8fa" }}>
+      {/* Header */}
+      <div style={{ textAlign: "center", marginBottom: 40 }}>
+        <h1 style={{ color: "#1f3b57", marginBottom: 10, fontSize: 32, fontWeight: 600 }}>
           FinSolve
         </h1>
-        <p style={{ color: "#555", fontSize: 16 }}>
+        <p style={{ color: "#4a5a6a", fontSize: 16, marginBottom: 5 }}>
           One-stop solution for everything finance.
         </p>
-        <p style={{ color: "#555", fontSize: 16 }}>
+        <p style={{ color: "#4a5a6a", fontSize: 16, marginBottom: 10 }}>
           Precision in Accounting, Excellence in Advisory.
         </p>
-        <p style={{ marginTop: 10, fontSize: 14 }}>
+        <p style={{ fontSize: 14, color: "#4a5a6a" }}>
           Visit our official website:{" "}
           <a
             href="https://animeshkurbetti.wixsite.com/animesh-kurbetti/"
             target="_blank"
             rel="noopener noreferrer"
-            style={{ textDecoration: "underline", color: "#007bff" }}
+            style={{ textDecoration: "underline", color: "#1f3b57" }}
           >
             animeshkurbetti.wixsite.com
           </a>
@@ -96,59 +96,89 @@ function CustomerPage() {
         style={{
           display: "grid",
           gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))",
-          gap: 20,
+          gap: 25,
         }}
       >
         {services.map((service) => (
           <div
             key={service._id}
             style={{
-              border: "1px solid #ccc",
-              padding: 20,
-              borderRadius: 8,
-              boxShadow: "0 2px 8px rgba(0,0,0,0.1)",
+              border: "1px solid #d9dce0",
+              padding: 25,
+              borderRadius: 15,
+              boxShadow: "0 4px 12px rgba(0,0,0,0.06)",
+              backgroundColor: "#fff",
+              transition: "transform 0.2s",
             }}
+            onMouseEnter={(e) => (e.currentTarget.style.transform = "scale(1.02)")}
+            onMouseLeave={(e) => (e.currentTarget.style.transform = "scale(1)")}
           >
-            <h3 style={{ marginBottom: 10, color: "#007bff" }}>{service.name}</h3>
-            <p style={{ fontSize: 14, color: "#555" }}>{service.description}</p>
+            <h3 style={{ marginBottom: 12, color: "#1f3b57", fontSize: 20 }}>{service.name}</h3>
+            <p style={{ fontSize: 14, color: "#4a5a6a", lineHeight: 1.5 }}>{service.description}</p>
             <span
               style={{
                 display: "inline-block",
-                marginTop: 10,
-                padding: "4px 10px",
-                backgroundColor: "#f0f0f0",
-                borderRadius: 4,
-                fontWeight: "bold",
+                marginTop: 12,
+                padding: "6px 12px",
+                backgroundColor: "#e6eef7",
+                borderRadius: 10,
+                fontWeight: 600,
+                color: "#1f3b57",
               }}
             >
               {service.price}
             </span>
 
-            <div style={{ marginTop: 15 }}>
+            <div style={{ marginTop: 18, display: "flex", gap: 10 }}>
               <input
                 type="email"
                 placeholder="Your Email"
                 value={enquiry[service._id]?.email || ""}
                 onChange={(e) => handleChange(service._id, "email", e.target.value)}
-                style={{ marginRight: 10, padding: 6, width: "45%" }} // increased spacing
+                style={{
+                  flex: 1,
+                  padding: 8,
+                  borderRadius: 8,
+                  border: "1px solid #c4c9ce",
+                  backgroundColor: "#f9f9f9",
+                }}
               />
               <input
                 type="text"
                 placeholder="Phone Number"
                 value={enquiry[service._id]?.phone || ""}
                 onChange={(e) => handleChange(service._id, "phone", e.target.value)}
-                style={{ padding: 6, width: "45%" }}
+                style={{
+                  flex: 1,
+                  padding: 8,
+                  borderRadius: 8,
+                  border: "1px solid #c4c9ce",
+                  backgroundColor: "#f9f9f9",
+                }}
               />
-              <button
-                onClick={() => handleEnquire(service._id, service.name)}
-                style={{ marginTop: 10, width: "100%", padding: 8 }}
-              >
-                Enquire Service
-              </button>
             </div>
+            <button
+              onClick={() => handleEnquire(service._id, service.name)}
+              style={{
+                marginTop: 12,
+                width: "100%",
+                padding: 10,
+                borderRadius: 8,
+                backgroundColor: "#1f3b57",
+                color: "#fff",
+                border: "none",
+                cursor: "pointer",
+                fontWeight: 600,
+                transition: "background-color 0.2s",
+              }}
+              onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = "#0f2333")}
+              onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = "#1f3b57")}
+            >
+              Enquire Service
+            </button>
 
             {messages[service._id] && (
-              <p style={{ marginTop: 10, fontSize: 14 }}>{messages[service._id]}</p>
+              <p style={{ marginTop: 10, fontSize: 14, color: "#d9534f" }}>{messages[service._id]}</p>
             )}
           </div>
         ))}
